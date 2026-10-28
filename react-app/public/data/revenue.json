@@ -1,0 +1,17 @@
+{
+  "unit": "USD thousands",
+  "ranges": {
+    "3": {
+      "labels": ["Jul", "Aug", "Sep"],
+      "values": [61, 74, 80]
+    },
+    "6": {
+      "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"],
+      "values": [27, 34, 30, 47, 53, 50, 61, 74, 80]
+    },
+    "12": {
+      "labels": ["Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"],
+      "values": [18, 22, 31, 27, 34, 30, 47, 53, 50, 61, 74, 80]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+/* ---------- registry extras ---------- */
+.registry__tools { display: flex; align-items: center; gap: var(--s-3); flex-wrap: wrap; justify-content: flex-end; }
+.btn--sm { height: 36px; font-size: 14px; padding: 0 var(--s-3); }
+.btn--sm .icon { width: 16px; height: 16px; }
+.btn--ghost { background: transparent; border-color: var(--c-border); color: var(--c-text); }
+.btn--ghost:hover { background: var(--c-primary-soft); }
+.btn--danger { background: #b3261e; color: #fff; }
+.btn--danger:hover { background: #8f1d17; }
+
+tbody th.cell-name { display: table-cell; font-weight: 400; padding: 11px var(--s-4); border-top: 1px solid var(--c-border); }
+.row-actions { display: flex; gap: var(--s-3); flex-wrap: wrap; }
+.row-actions button { border: 0; background: transparent; padding: 2px 0; font-size: 15px; }
+.row-actions button:hover { text-decoration: underline; color: var(--c-primary); }
+.row-actions .is-danger:hover { color: #b3261e; }
+
+/* ---------- dialog forms ---------- */
+dialog p { margin-bottom: var(--s-4); color: var(--c-muted); }
+.dialog-actions { display: flex; justify-content: flex-end; gap: var(--s-3); margin-top: var(--s-5); }
+
+.field { margin-bottom: var(--s-4); }
+.field label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 14px; }
+.optional { font-weight: 400; color: var(--c-muted); }
+.field input, .field select {
+  width: 100%; height: 42px; padding: 0 var(--s-3);
+  border: 1px solid var(--c-border); border-radius: var(--radius-sm); background: var(--c-surface);
+}
+.field input:focus, .field select:focus { outline: 3px solid #2a8cff; outline-offset: 1px; border-color: var(--c-primary); }
+.field .is-invalid { border-color: #b3261e; background: #fff8f7; }
+.field-error { min-height: 0; margin: 4px 0 0; font-size: 13px; color: #b3261e; }
+.field-error:empty { display: none; }

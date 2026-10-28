@@ -1,0 +1,10 @@
+{
+  "models": [
+    { "id": "m1", "name": "Sales Forecasting",      "type": "Regression",     "accuracy": 98.4, "status": "Training", "progress": 75,   "version": "v3.2", "updated": "2 days ago" },
+    { "id": "m2", "name": "Demand Prediction",      "type": "Forecast",       "accuracy": 94.2, "status": "Active",   "progress": null, "version": "v2.7", "updated": "5 days ago" },
+    { "id": "m3", "name": "Customer Churn",         "type": "Classification", "accuracy": 91.8, "status": "Active",   "progress": null, "version": "v4.1", "updated": "1 week ago" },
+    { "id": "m4", "name": "Inventory Optimization", "type": "Optimization",   "accuracy": null, "status": "Pending",  "progress": null, "version": "v1.0", "updated": "Not deployed" },
+    { "id": "m5", "name": "Price Elasticity",       "type": "Regression",     "accuracy": 89.5, "status": "Active",   "progress": null, "version": "v1.8", "updated": "3 weeks ago" },
+    { "id": "m6", "name": "Fraud Detection",        "type": "Classification", "accuracy": 96.7, "status": "Active",   "progress": null, "version": "v5.0", "updated": "1 day ago" }
+  ]
+}

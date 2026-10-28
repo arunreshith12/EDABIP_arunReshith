@@ -1,0 +1,31 @@
+{
+  "ranges": {
+    "3": [
+      { "label": "Mon", "value": 18000, "color": "var(--ch-mint)" },
+      { "label": "Tue", "value": 29000, "color": "var(--ch-lilac)" },
+      { "label": "Wed", "value": 52000, "color": "var(--ch-periwinkle)" },
+      { "label": "Thu", "value": 78000, "color": "var(--ch-deep)" },
+      { "label": "Fri", "value": 44000, "color": "var(--ch-slate)" },
+      { "label": "Sat", "value": 38000, "color": "var(--ch-sage)" },
+      { "label": "Sun", "value": 47000, "color": "var(--ch-rose)" }
+    ],
+    "6": [
+      { "label": "Mon", "value": 23000, "color": "var(--ch-mint)" },
+      { "label": "Tue", "value": 35000, "color": "var(--ch-lilac)" },
+      { "label": "Wed", "value": 65000, "color": "var(--ch-periwinkle)" },
+      { "label": "Thu", "value": 95000, "color": "var(--ch-deep)" },
+      { "label": "Fri", "value": 55000, "color": "var(--ch-slate)" },
+      { "label": "Sat", "value": 45000, "color": "var(--ch-sage)" },
+      { "label": "Sun", "value": 60000, "color": "var(--ch-rose)" }
+    ],
+    "12": [
+      { "label": "Mon", "value": 31000, "color": "var(--ch-mint)" },
+      { "label": "Tue", "value": 42000, "color": "var(--ch-lilac)" },
+      { "label": "Wed", "value": 71000, "color": "var(--ch-periwinkle)" },
+      { "label": "Thu", "value": 88000, "color": "var(--ch-deep)" },
+      { "label": "Fri", "value": 63000, "color": "var(--ch-slate)" },
+      { "label": "Sat", "value": 52000, "color": "var(--ch-sage)" },
+      { "label": "Sun", "value": 69000, "color": "var(--ch-rose)" }
+    ]
+  }
+}

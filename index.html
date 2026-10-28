@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Analytics | EDABIP</title>
+  <link rel="icon" href="assets/logo-dark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/states.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ============ TOP BAR ============ -->
+  <header class="topbar">
+    <form class="search" role="search" onsubmit="return false">
+      <label for="searchInput" class="sr-only">Search models</label>
+      <svg class="icon search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      <input id="searchInput" type="text" placeholder="Search" autocomplete="off">
+      <button type="button" class="search__clear" id="searchClear" aria-label="Clear search">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </form>
+
+    <div class="topbar__actions">
+      <div class="notif">
+        <button class="icon-btn" id="notifBtn" aria-label="Notifications" aria-expanded="false" aria-controls="notifPanel">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17V11a6 6 0 0 1 6-6M18 11v6M4 17h16M10 20.5h4"/><circle cx="18" cy="6" r="2" class="fill"/></svg>
+        </button>
+        <div class="notif__panel" id="notifPanel" hidden>
+          <h2>Notifications</h2>
+          <div id="notifList"></div>
+        </div>
+      </div>
+      <button class="avatar" aria-label="Account menu">
+        <img src="assets/logo-dark.svg" alt="">
+      </button>
+    </div>
+  </header>
+
+  <main id="main" class="page">
+
+    <!-- ============ PAGE TITLE ============ -->
+    <div class="page__head">
+      <h1>Analytics</h1>
+      <div class="page__head-right">
+        <p class="refreshed">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4h4M12 8v4l3 2"/></svg>
+          <span id="lastRefreshed">Last Refreshed: just now</span>
+        </p>
+        <button class="btn btn--primary" id="exportBtn">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7zM14 3v4h4M10.5 14.5l2-2 2 2M12.5 12.5V18"/></svg>
+          Export
+        </button>
+      </div>
+    </div>
+
+    <!-- ============ WELCOME ============ -->
+    <section class="card welcome" aria-labelledby="welcomeTitle">
+      <div class="welcome__text">
+        <div class="welcome__title-row">
+          <h2 id="welcomeTitle">Welcome Back, Arun!</h2>
+          <span class="pill-live"><i aria-hidden="true"></i>Real Time</span>
+        </div>
+        <p>Stay Organised with real time insight, Monitor Your Business Performance and key Metrics.</p>
+      </div>
+
+      <div class="welcome__controls">
+        <label class="select select--icon">
+          <span class="sr-only">Date range</span>
+          <svg class="icon select__lead" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4M8 13.5h2M13 13.5h2"/></svg>
+          <select id="rangeSelect">
+            <option value="7">Last 7 Days</option>
+            <option value="30">Last 30 Days</option>
+            <option value="90">Last 90 Days</option>
+          </select>
+        </label>
+        <label class="select">
+          <span class="sr-only">Category</span>
+          <select id="categorySelect"></select>
+        </label>
+        <button class="btn btn--primary" id="refreshBtn">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v5h-5"/></svg>
+          Refresh
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ KPI CARDS (filled from data/metrics.json) ============ -->
+    <section class="kpis" aria-label="Model metrics" id="kpiGrid" aria-live="polite"></section>
+
+    <!-- ============ CHARTS (filled from data/revenue.json and data/demand.json) ============ -->
+    <section class="charts">
+      <article class="card chart-card" aria-labelledby="revTitle">
+        <header class="chart-card__head">
+          <h2 id="revTitle">Revenue Forecast</h2>
+          <label class="select select--outline">
+            <span class="sr-only">Revenue forecast period</span>
+            <select id="revRange">
+              <option value="3">Last 3 Months</option>
+              <option value="6">Last 6 Months</option>
+              <option value="12">Last 12 Months</option>
+            </select>
+          </label>
+        </header>
+        <div class="chart" id="revenueChart" role="img" aria-label="Area chart of revenue forecast by month"></div>
+      </article>
+
+      <article class="card chart-card" aria-labelledby="demTitle">
+        <header class="chart-card__head">
+          <h2 id="demTitle">Demand Prediction (Next 7 Days)</h2>
+          <label class="select select--outline">
+            <span class="sr-only">Demand prediction period</span>
+            <select id="demRange">
+              <option value="3">Last 3 Months</option>
+              <option value="6">Last 6 Months</option>
+              <option value="12">Last 12 Months</option>
+            </select>
+          </label>
+        </header>
+        <div class="chart" id="demandChart" role="img" aria-label="Bar chart of predicted demand for the next seven days"></div>
+        <button class="fab" aria-label="Ask AI assistant" id="fabBtn">
+          <img src="assets/ai .png" alt="">
+        </button>
+      </article>
+    </section>
+
+    <!-- ============ MODEL REGISTRY ============ -->
+    <section class="card registry" aria-labelledby="regTitle">
+      <header class="registry__head">
+        <h2 id="regTitle">ML Model Registry</h2>
+        <div class="registry__tools">
+          <button class="btn btn--primary btn--sm" id="addModelBtn">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            Add Model
+          </button>
+          <button class="link-btn" id="resetBtn">Reset data</button>
+          <button class="link-btn" id="viewAllBtn" aria-expanded="false">
+            <span id="viewAllLabel">View All</span>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="table-wrap" id="tableWrap">
+        <table id="registryTable" hidden>
+          <caption class="sr-only">Registered machine learning models</caption>
+          <thead>
+            <tr>
+              <th scope="col" aria-sort="none"><button class="sort" data-key="name">Model Name</button></th>
+              <th scope="col" aria-sort="none"><button class="sort" data-key="type">Type</button></th>
+              <th scope="col" aria-sort="none"><button class="sort" data-key="accuracy">Accuracy</button></th>
+              <th scope="col">Status</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody id="registryBody"></tbody>
+        </table>
+        <div id="registryState"></div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>© 2026 EDABIP. All rights reserved. Enterprise Data Analytics &amp; Business Intelligence Platform</p>
+      <nav aria-label="Footer">
+        <a href="#">Privacy Policy</a><span aria-hidden="true">·</span>
+        <a href="#">Terms</a><span aria-hidden="true">·</span>
+        <a href="#">Help &amp; Support</a>
+        <span class="version">v2.1.0</span>
+      </nav>
+    </footer>
+  </main>
+
+  <!-- Add / edit model -->
+  <dialog id="modelFormDialog" aria-labelledby="formTitle">
+    <form id="modelForm" novalidate>
+      <h2 id="formTitle">Add Model</h2>
+
+      <div class="field">
+        <label for="f-name">Model name</label>
+        <input id="f-name" name="name" type="text" maxlength="40" autocomplete="off" aria-describedby="e-name">
+        <p class="field-error" id="e-name" data-error-for="name"></p>
+      </div>
+
+      <div class="field">
+        <label for="f-type">Type</label>
+        <select id="f-type" name="type" aria-describedby="e-type"></select>
+        <p class="field-error" id="e-type" data-error-for="type"></p>
+      </div>
+
+      <div class="field">
+        <label for="f-accuracy">Accuracy % <span class="optional">(optional)</span></label>
+        <input id="f-accuracy" name="accuracy" type="text" inputmode="decimal" autocomplete="off" placeholder="e.g. 93.5" aria-describedby="e-accuracy">
+        <p class="field-error" id="e-accuracy" data-error-for="accuracy"></p>
+      </div>
+
+      <div class="field">
+        <label for="f-status">Status</label>
+        <select id="f-status" name="status" aria-describedby="e-status"></select>
+        <p class="field-error" id="e-status" data-error-for="status"></p>
+      </div>
+
+      <div class="field" id="progressField" hidden>
+        <label for="f-progress">Training progress %</label>
+        <input id="f-progress" name="progress" type="text" inputmode="numeric" autocomplete="off" placeholder="0 – 100" aria-describedby="e-progress">
+        <p class="field-error" id="e-progress" data-error-for="progress"></p>
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn btn--ghost" id="formCancel">Cancel</button>
+        <button type="submit" class="btn btn--primary">Save model</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- View model -->
+  <dialog id="modelDialog" aria-labelledby="dlgTitle">
+    <form method="dialog">
+      <h2 id="dlgTitle">Model</h2>
+      <dl id="dlgBody"></dl>
+      <div class="dialog-actions"><button class="btn btn--primary">Close</button></div>
+    </form>
+  </dialog>
+
+  <!-- Confirm -->
+  <dialog id="confirmDialog" aria-labelledby="confirmTitle" aria-describedby="confirmText">
+    <form method="dialog">
+      <h2 id="confirmTitle">Are you sure?</h2>
+      <p id="confirmText"></p>
+      <div class="dialog-actions">
+        <button class="btn btn--ghost" value="cancel">Cancel</button>
+        <button class="btn btn--danger" value="confirm" id="confirmOk">Confirm</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="tooltip" id="tooltip" role="status" hidden></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
