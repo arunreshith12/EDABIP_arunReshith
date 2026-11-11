@@ -7,3 +7,12 @@
 .not-found h1 { font-size: 28px; font-weight: 500; }
 .not-found p { color: var(--c-muted); }
 .not-found .btn { margin-top: var(--s-3); text-decoration: none; }
+
+/* ---------- login page ---------- */
+.login { min-height: 100vh; display: grid; place-items: center; padding: var(--s-4); background: var(--c-bg); }
+.login__card { width: min(420px, 100%); padding: var(--s-6) var(--s-5); }
+.login__card h1 { font-size: 26px; font-weight: 500; margin-bottom: var(--s-5); }
+.login__notice { margin: 0 0 var(--s-4); padding: var(--s-3); border-radius: var(--radius-sm); background: var(--c-info-bg); color: var(--c-info); font-size: 14px; }
+.login__error { margin: 0 0 var(--s-4); padding: var(--s-3); border-radius: var(--radius-sm); background: var(--c-bad-bg); color: var(--c-bad); font-size: 14px; }
+.login__submit { width: 100%; }
+.login__submit:disabled { opacity: .7; cursor: progress; }

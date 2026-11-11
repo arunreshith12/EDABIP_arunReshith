@@ -12,12 +12,15 @@ const MAX_BAR_WIDTH = 44;
 
 interface BarChartProps {
   items: readonly DemandPoint[];
+  /** Number shown above each bar. */
   formatValue: (value: number) => string;
+  /** Text for tooltips and screen readers. */
+  formatDescription: (value: number) => string;
   formatTick: (value: number) => string;
 }
 
 /** Bar chart with a value label above every bar and a tooltip on hover / focus. */
-export function BarChart({ items, formatValue, formatTick }: BarChartProps): ReactElement {
+export function BarChart({ items, formatValue, formatDescription, formatTick }: BarChartProps): ReactElement {
   const { tip, bind } = useTooltip();
 
   const yMax = niceCeil(Math.max(...items.map(item => item.value)));
@@ -33,9 +36,9 @@ export function BarChart({ items, formatValue, formatTick }: BarChartProps): Rea
 
         {items.map((item, index) => {
           const centerX = BOX.left + slot * index + slot / 2;
-          const description = `${item.label}: ${formatValue(item.value)}`;
+          const description = `${item.caption}: ${formatDescription(item.value)}`;
           return (
-            <g key={item.label}>
+            <g key={item.caption}>
               <rect
                 className="bar"
                 x={centerX - barWidth / 2}

@@ -1,14 +1,15 @@
 import { useCallback } from 'react';
 import type { ReactElement } from 'react';
-import { getRevenueSeries } from '../../api/charts';
+import { getRevenueForecast } from '../../api/analytics';
+import { PERIOD_OPTIONS } from '../../constants';
 import { useFetch } from '../../hooks/useFetch';
 import type { PeriodKey } from '../../types';
-import { AsyncContent } from '../common/AsyncContent';
+import { formatAxisUsd, formatUsdThousands } from '../../utils/format';
+import { ForecastNote } from '../charts/ForecastNote';
 import { LineChart } from '../charts/LineChart';
+import { AsyncContent } from '../common/AsyncContent';
+import { Select } from '../ui/Select';
 import { ChartCard } from './ChartCard';
-
-const formatRevenue = (value: number): string => `$${value}K`;
-const formatRevenueTick = (value: number): string => (value === 0 ? '0' : formatRevenue(value));
 
 interface RevenueChartCardProps {
   period: PeriodKey;
@@ -17,34 +18,42 @@ interface RevenueChartCardProps {
 }
 
 export function RevenueChartCard({ period, onPeriodChange, refreshToken }: RevenueChartCardProps): ReactElement {
-  // a new `period` gives a new function, so useFetch loads the other dataset
-  const load = useCallback(() => getRevenueSeries(period), [period]);
+  // a new `period` gives a new function, so useFetch asks the API again with ?months=<period>
+  const load = useCallback(() => getRevenueForecast(period), [period]);
   const { state, reload } = useFetch(load, { reloadKey: refreshToken });
 
   return (
     <ChartCard
       title="Revenue Forecast"
-      periodLabel="Revenue forecast period"
-      chartLabel="Area chart of revenue forecast by month"
-      period={period}
-      onPeriodChange={onPeriodChange}
+      chartLabel="Area chart of monthly revenue: actual months followed by forecast months"
+      headerExtra={
+        <Select
+          label="Revenue forecast period"
+          variant="outline"
+          value={period}
+          options={PERIOD_OPTIONS}
+          onChange={onPeriodChange}
+        />
+      }
     >
       <AsyncContent
         state={state}
         onRetry={reload}
-        isEmpty={series => series.values.length === 0}
+        isEmpty={data => data.points.length === 0}
         emptyMessage="No revenue data for this period."
         errorMessage="Could not load the revenue forecast."
       >
-        {series => (
-          <LineChart
-            labels={series.labels}
-            values={series.values}
-            formatValue={formatRevenue}
-            formatTick={formatRevenueTick}
-            xTitle="Month"
-            yTitle="Revenue (USD)"
-          />
+        {data => (
+          <>
+            <LineChart
+              points={data.points}
+              formatValue={formatUsdThousands}
+              formatTick={formatAxisUsd}
+              xTitle="Month"
+              yTitle="Revenue (USD)"
+            />
+            <ForecastNote title="Forecast method" method={data.method} showLegend />
+          </>
         )}
       </AsyncContent>
     </ChartCard>

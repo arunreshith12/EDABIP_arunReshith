@@ -15,6 +15,8 @@ interface FieldBaseProps {
 }
 
 interface TextFieldProps extends FieldBaseProps {
+  type?: 'text' | 'email' | 'password';
+  autoComplete?: string;
   inputMode?: 'text' | 'decimal' | 'numeric';
   placeholder?: string;
   maxLength?: number;
@@ -56,6 +58,8 @@ export function TextField({
   onChange,
   error,
   optional = false,
+  type = 'text',
+  autoComplete = 'off',
   inputMode = 'text',
   placeholder,
   maxLength
@@ -68,13 +72,13 @@ export function TextField({
       <input
         id={id}
         name={name}
-        type="text"
+        type={type}
         value={value}
         onChange={handleChange}
         inputMode={inputMode}
         placeholder={placeholder}
         maxLength={maxLength}
-        autoComplete="off"
+        autoComplete={autoComplete}
         className={invalid ? 'is-invalid' : undefined}
         aria-invalid={invalid}
         aria-describedby={`${id}-error`}

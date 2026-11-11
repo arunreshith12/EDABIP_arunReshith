@@ -1,29 +1,27 @@
 import type { ReactElement } from 'react';
-import { getMetrics } from '../../api/metrics';
-import { useFetch } from '../../hooks/useFetch';
-import type { RangeKey } from '../../types';
+import type { FetchState, MetricsData, RangeKey } from '../../types';
 import { AsyncContent } from '../common/AsyncContent';
 import { StatCard } from './StatCard';
 
 interface MetricsSectionProps {
+  /** Loaded by the page, because the page also shows "Last Refreshed" from the same response. */
+  state: FetchState<MetricsData>;
+  onRetry: () => void;
   range: RangeKey;
-  /** Changes when the Refresh button is pressed. */
-  refreshToken: number;
 }
 
-/** The four metric cards. Loads data/metrics.json through the API layer. */
-export function MetricsSection({ range, refreshToken }: MetricsSectionProps): ReactElement {
-  const { state, reload } = useFetch(getMetrics, { reloadKey: refreshToken });
-
+/** The four metric cards. */
+export function MetricsSection({ state, onRetry, range }: MetricsSectionProps): ReactElement {
   return (
     <section className="kpis" aria-label="Model metrics" aria-live="polite">
       <AsyncContent
         state={state}
-        onRetry={reload}
+        onRetry={onRetry}
+        isEmpty={data => data.metrics.length === 0}
         emptyMessage="No metrics available yet."
         errorMessage="Could not load the metric cards."
       >
-        {metrics => metrics.map(metric => <StatCard key={metric.id} metric={metric} range={range} />)}
+        {data => data.metrics.map(metric => <StatCard key={metric.key} metric={metric} range={range} />)}
       </AsyncContent>
     </section>
   );

@@ -1,95 +1,131 @@
+// Types the UI works with. The raw API response shapes live in src/api/dto.ts;
+// src/api/mappers.ts converts them into these types, so components never see the API format.
+
 import type { ReactNode } from 'react';
-import type { MODEL_STATUSES, MODEL_TYPES, PERIOD_OPTIONS, RANGE_OPTIONS, SORT_KEYS } from '../constants';
+import type { ALL_CATEGORIES, PERIOD_OPTIONS, RANGE_OPTIONS, SORT_KEYS } from '../constants';
 
 /* ---------- unions derived from constants ---------- */
-export type ModelType = (typeof MODEL_TYPES)[number];
-export type ModelStatus = (typeof MODEL_STATUSES)[number];
 export type SortKey = (typeof SORT_KEYS)[number];
 export type RangeKey = (typeof RANGE_OPTIONS)[number]['value'];
 export type PeriodKey = (typeof PERIOD_OPTIONS)[number]['value'];
 export type SortDir = 'asc' | 'desc';
-export type CategoryFilter = 'all' | ModelType;
+/** 'all' or the name of a model type that exists in the data. */
+export type CategoryFilter = typeof ALL_CATEGORIES | (string & {});
 
-/* ---------- metric cards (data/metrics.json) ---------- */
+/* ---------- metric cards ---------- */
 export type IconName =
   | 'search' | 'close' | 'bell' | 'calendar' | 'refresh' | 'export'
   | 'history' | 'plus' | 'chevron' | 'bars' | 'trend' | 'gauge'
-  | 'coin' | 'up' | 'down';
+  | 'coin' | 'up' | 'down' | 'logout';
 
-export type Tone = 'good' | 'bad' | 'info';
 export type SparkKind = 'area' | 'line';
-
-export interface Trend {
-  text: string;
-  tone: Tone;
-  icon: IconName | null;
-}
+/** "percent": the value is already 0–100.  "ratio": the value is 0–1. */
+export type MetricUnit = 'percent' | 'ratio';
+/** "percent": relative change in %.  "absolute": difference in the metric's own unit. */
+export type ChangeUnit = 'percent' | 'absolute';
 
 export interface Metric {
-  id: string;
+  key: string;
   title: string;
   icon: IconName;
   spark: SparkKind;
-  values: Record<RangeKey, string>;
-  trend: Trend;
-  series: number[];
+  value: number;
+  unit: MetricUnit;
+  /** Change versus the previous period, or null when the API has none. */
+  change: number | null;
+  changeUnit: ChangeUnit;
+  /** Optional trend for the small chart. Cards without it simply show no sparkline. */
+  series: number[] | null;
 }
 
-/* ---------- charts (data/revenue.json, data/demand.json) ---------- */
-export interface RevenueSeries {
-  labels: string[];
-  values: number[];
+export interface MetricsData {
+  metrics: Metric[];
+  /** ISO timestamp of when the pipeline produced these numbers. */
+  generatedAt: string;
 }
 
-export interface RevenueData {
-  unit: string;
-  ranges: Record<PeriodKey, RevenueSeries>;
+/* ---------- charts ---------- */
+export interface ForecastMethod {
+  name: string;
+  description: string;
+}
+
+export interface RevenuePoint {
+  /** "2026-05" */
+  month: string;
+  /** "May" (or "Jan ’27" when the chart spans two years) */
+  label: string;
+  /** US dollars */
+  value: number;
+  isForecast: boolean;
+}
+
+export interface RevenueForecast {
+  points: RevenuePoint[];
+  method: ForecastMethod;
+  generatedAt: string;
 }
 
 export interface DemandPoint {
+  /** "Tue" */
   label: string;
+  /** "Tue, 11 Nov" – used in tooltips */
+  caption: string;
   value: number;
   color: string;
 }
 
-export interface DemandData {
-  ranges: Record<PeriodKey, DemandPoint[]>;
+export interface DemandForecast {
+  days: DemandPoint[];
+  method: ForecastMethod;
+  generatedAt: string;
 }
 
-/* ---------- ML model registry (data/models.json) ---------- */
+/* ---------- ML model registry ---------- */
+export type ModelState = 'active' | 'training' | 'pending' | 'other';
+
 export interface MlModel {
   id: string;
   name: string;
-  type: ModelType;
-  accuracy: number | null;
-  status: ModelStatus;
-  progress: number | null;
-  version: string;
-  updated: string;
-}
-
-/** Raw text typed into the add / edit form. Validated before becoming an MlModel. */
-export interface ModelFormValues {
-  name: string;
   type: string;
-  accuracy: string;
-  status: string;
-  progress: string;
+  /** Percent (0–100), or null when the model has no accuracy yet. */
+  accuracy: number | null;
+  /** Exactly the text the API sent, e.g. "Training 75%". Shown in the table. */
+  statusLabel: string;
+  state: ModelState;
+  /** 0–100 while training, otherwise null. */
+  progress: number | null;
+  version: string | null;
+  /** ISO timestamp, or null when unknown. */
+  updatedAt: string | null;
 }
 
-export type ModelFormErrors = Partial<Record<keyof ModelFormValues, string>>;
+/** One page of the model list, as the API sends it (items, total, page, size). */
+export interface ModelsPage {
+  items: MlModel[];
+  total: number;
+  page: number;
+  size: number;
+}
 
 export interface AppNotification {
   id: string;
   text: string;
 }
 
+/* ---------- login ---------- */
+export interface LoginValues {
+  email: string;
+  password: string;
+}
+
+export type LoginErrors = Partial<Record<keyof LoginValues, string>>;
+
 /* ---------- user settings (persisted) ---------- */
 export interface Settings {
   range: RangeKey;
   category: CategoryFilter;
   revRange: PeriodKey;
-  demRange: PeriodKey;
   query: string;
   sortKey: SortKey | null;
   sortDir: SortDir;

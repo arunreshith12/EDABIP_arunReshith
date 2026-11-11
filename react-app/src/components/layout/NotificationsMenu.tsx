@@ -1,9 +1,14 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import type { ReactElement } from 'react';
-import { getNotifications } from '../../api/notifications';
+import { getModels } from '../../api/analytics';
 import { useFetch } from '../../hooks/useFetch';
+import type { AppNotification } from '../../types';
+import { modelNotifications } from '../../utils/models';
 import { AsyncContent } from '../common/AsyncContent';
 import { Icon } from '../ui/Icon';
+
+/** There is no notifications endpoint: the list is built from the model registry (training and pending models). */
+const loadNotifications = async (): Promise<AppNotification[]> => modelNotifications(await getModels());
 
 /** Bell button + dropdown. The list is only requested the first time the menu opens. */
 export function NotificationsMenu(): ReactElement {
@@ -11,7 +16,7 @@ export function NotificationsMenu(): ReactElement {
   const [requested, setRequested] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const panelId = useId();
-  const { state, reload } = useFetch(getNotifications, { enabled: requested });
+  const { state, reload } = useFetch(loadNotifications, { enabled: requested });
 
   // close on outside click or Escape (listeners exist only while the menu is open)
   useEffect(() => {

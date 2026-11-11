@@ -118,3 +118,18 @@ dt { color: var(--c-muted); }
 }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
+
+/* ---------- forecast charts ---------- */
+.status--other { color: var(--c-muted); border-color: var(--c-border); background: var(--c-bg); }
+
+.chart .forecast-band rect { fill: var(--c-primary); fill-opacity: .06; }
+.chart .forecast-label { fill: var(--c-primary); font-size: 12px; font-weight: 600; letter-spacing: .3px; }
+.chart .dot--forecast { fill: var(--c-surface); stroke: #0e3938; stroke-width: 2; stroke-dasharray: 3 2; }
+
+.chart-note { margin-top: var(--s-3); font-size: 13px; color: var(--c-muted); line-height: 1.5; }
+.chart-note strong { color: var(--c-text); font-weight: 600; }
+.legend { display: flex; gap: var(--s-4); margin-bottom: var(--s-2); color: var(--c-text); font-size: 13px; }
+.legend li { display: inline-flex; align-items: center; gap: 6px; }
+.legend__swatch { width: 22px; height: 0; border-top: 3px solid #0e3938; }
+.legend__swatch--forecast { border-top-style: dashed; }
+.chart-card .chart-note { padding-right: 72px; }

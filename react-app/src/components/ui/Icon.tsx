@@ -42,7 +42,8 @@ const ICON_PATHS: Record<IconName, ReactNode> = {
     </>
   ),
   up: <path d="M4 17l6-6 4 4 6-8M15 7h5v5" />,
-  down: <path d="M4 7l6 6 4-4 6 8M15 17h5v-5" />
+  down: <path d="M4 7l6 6 4-4 6 8M15 17h5v-5" />,
+  logout: <path d="M10 4H5v16h5M14 8l4 4-4 4M18 12H9" />
 };
 
 interface IconProps {

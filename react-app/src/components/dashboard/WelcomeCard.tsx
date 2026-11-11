@@ -1,12 +1,14 @@
 import type { ReactElement } from 'react';
-import { CATEGORY_OPTIONS, RANGE_OPTIONS } from '../../constants';
-import type { CategoryFilter, RangeKey } from '../../types';
+import { RANGE_OPTIONS } from '../../constants';
+import type { CategoryFilter, RangeKey, SelectOption } from '../../types';
 import { Icon } from '../ui/Icon';
 import { Select } from '../ui/Select';
 
 interface WelcomeCardProps {
   range: RangeKey;
   category: CategoryFilter;
+  /** "All Categories" plus the model types found in the registry. */
+  categoryOptions: readonly SelectOption[];
   refreshing: boolean;
   onRangeChange: (range: RangeKey) => void;
   onCategoryChange: (category: CategoryFilter) => void;
@@ -16,6 +18,7 @@ interface WelcomeCardProps {
 export function WelcomeCard({
   range,
   category,
+  categoryOptions,
   refreshing,
   onRangeChange,
   onCategoryChange,
@@ -36,7 +39,7 @@ export function WelcomeCard({
 
       <div className="welcome__controls">
         <Select label="Date range" icon="calendar" value={range} options={RANGE_OPTIONS} onChange={onRangeChange} />
-        <Select label="Category" value={category} options={CATEGORY_OPTIONS} onChange={onCategoryChange} />
+        <Select label="Category" value={category} options={categoryOptions} onChange={onCategoryChange} />
         <button
           type="button"
           className={refreshing ? 'btn btn--primary is-loading' : 'btn btn--primary'}

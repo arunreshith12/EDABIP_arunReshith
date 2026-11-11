@@ -1,0 +1,34 @@
+/* ---------- responsive ---------- */
+@media (max-width: 1180px) {
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .charts { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .topbar { padding: 0 var(--s-4); height: 64px; }
+  .page { padding: var(--s-4); }
+  .page__head h1 { font-size: 26px; }
+  .welcome { padding: var(--s-4); }
+  .welcome h2 { font-size: 24px; }
+  .welcome__controls { width: 100%; }
+  .welcome__controls .select { flex: 1 1 150px; }
+  .welcome__controls .select select { width: 100%; }
+  .welcome__controls .btn { flex: 1 1 100%; }
+  .chart-card, .registry { padding: var(--s-4); }
+  .footer { font-size: 14px; }
+  .fab { width: 56px; height: 56px; bottom: 16px; }
+  .fab img { width: 28px; height: 28px; }
+}
+
+@media (max-width: 520px) {
+  .kpis { grid-template-columns: 1fr; gap: var(--s-4); }
+  .page__head-right { width: 100%; justify-content: space-between; gap: var(--s-3); }
+  .btn { font-size: 15px; }
+  .chart-card h2, .registry h2 { font-size: 18px; }
+  .chart-card__head .select { width: 100%; }
+  .chart-card__head .select select { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

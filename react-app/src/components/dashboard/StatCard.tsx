@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
-import type { Metric, RangeKey } from '../../types';
+import type { IconName, Metric, RangeKey } from '../../types';
+import { formatChange, formatMetricValue } from '../../utils/format';
 import { Sparkline } from '../charts/Sparkline';
 import { Icon } from '../ui/Icon';
 
@@ -8,8 +9,23 @@ interface StatCardProps {
   range: RangeKey;
 }
 
+interface Badge {
+  tone: 'good' | 'bad' | 'info';
+  icon: IconName | null;
+  text: string;
+}
+
+/** "+1.2% vs previous 30 days". Higher is better for all four metrics, so up is green and down is red. */
+function changeBadge(metric: Metric, range: RangeKey): Badge | null {
+  if (metric.change === null) return null;
+  const text = `${formatChange(metric.change, metric.changeUnit)} vs previous ${range} days`;
+  if (metric.change > 0) return { tone: 'good', icon: 'up', text };
+  if (metric.change < 0) return { tone: 'bad', icon: 'down', text };
+  return { tone: 'info', icon: null, text };
+}
+
 export function StatCard({ metric, range }: StatCardProps): ReactElement {
-  const { trend } = metric;
+  const badge = changeBadge(metric, range);
 
   return (
     <article className="kpi" aria-label={metric.title}>
@@ -21,16 +37,20 @@ export function StatCard({ metric, range }: StatCardProps): ReactElement {
       </div>
 
       <div className="kpi__mid">
-        <p className="kpi__value">{metric.values[range]}</p>
-        <div className="kpi__spark">
-          <Sparkline series={metric.series} kind={metric.spark} />
-        </div>
+        <p className="kpi__value">{formatMetricValue(metric.value, metric.unit)}</p>
+        {metric.series !== null && (
+          <div className="kpi__spark">
+            <Sparkline series={metric.series} kind={metric.spark} />
+          </div>
+        )}
       </div>
 
-      <span className={`badge badge--${trend.tone}`}>
-        {trend.icon !== null && <Icon name={trend.icon} />}
-        {trend.text}
-      </span>
+      {badge !== null && (
+        <span className={`badge badge--${badge.tone}`}>
+          {badge.icon !== null && <Icon name={badge.icon} />}
+          {badge.text}
+        </span>
+      )}
     </article>
   );
 }
